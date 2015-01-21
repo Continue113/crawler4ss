@@ -15,6 +15,10 @@ public class KaiqiuMatchesUrl {
 		Db urlsData = new Db("urls");
 		urlsData.start(folder);
 
+		// 历史数据库
+		Db urlsDataOld = new Db("urlsOld");
+		urlsDataOld.start(folder);
+
 		String base[] = {
 				"http://www.kaiqiu.cc/home/space-0-do-event-view-all-type-going-page-1.html",
 				"http://www.kaiqiu.cc/home/space-0-do-event-view-all-type-going-page-2.html",
@@ -39,13 +43,18 @@ public class KaiqiuMatchesUrl {
 						+ eventList.get(j).getElementsByClass("event_title")
 								.get(0).getElementsByTag("a").attr("href");
 
-				urlsData.set("url", url);
-				System.out.println("获取比赛链接-->"+url);
+				if(!urlsDataOld.contains(url)){
+					urlsData.set(url+":url", url);
+					urlsDataOld.set(url+":url", url);
+				}
+				System.out.println("获取比赛链接-->" + url);
 			}
 
 		}
 		urls = urlsData.selectAll();
+		
 		urlsData.close();
+		urlsDataOld.close();
 		return urls;
 	}
 }

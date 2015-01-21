@@ -14,6 +14,10 @@ public class HappyppMatchesUrl {
 		Db urlsData = new Db("urls");
 		urlsData.start(folder);
 
+		//历史数据库
+		Db urlsDataOld = new Db("urlsOld");
+		urlsDataOld.start(folder);
+		
 		String baseUrl = "http://www.happypingpang.com";
 		String pageUrl = null; // 比赛列表页面
 		String matchUrl = null; // 比赛具体地址
@@ -29,12 +33,18 @@ public class HappyppMatchesUrl {
 					.select("a[href]");
 			for (int j = 0; j < urlsEle.size(); ++j) {
 				matchUrl = baseUrl + urlsEle.get(j).attr("href");
-				urlsData.set("url", matchUrl);
+				if(!urlsDataOld.contains(matchUrl)){
+					urlsData.set(matchUrl+":url", matchUrl);
+					urlsDataOld.set(matchUrl+":url", matchUrl);
+				}
 				System.out.println("获取比赛链接-->"+matchUrl);
 			}
 		}
 		urls = urlsData.selectAll() ;
+		
 		urlsData.close();
+		urlsDataOld.close();
+		
 		return urls;
 	}
 }

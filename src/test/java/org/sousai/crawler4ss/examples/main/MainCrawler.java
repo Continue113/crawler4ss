@@ -179,6 +179,7 @@ public class MainCrawler implements ActionListener {
 				 */
 				for (String url : urls) {
 					System.out.println(url);
+					db.delete(url+":url");
 					jdbc.add(new MatchData.Builder(url, matches.selectByKey(url
 							+ ":name"))
 							.matchType(matches.selectByKey(url + ":type"))

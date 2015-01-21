@@ -22,13 +22,13 @@ public class HappyppCrawler implements Runnable {
 		for (String url : urls) {
 			WaitingUrlQueues.add(url);
 		}
-		//启动存储比赛数据的数据库
+		// 启动存储比赛数据的数据库
 		matches = new Db("matches");
 		matches.start(storageFolder);
 
 		// 初始化抓取器
 		pageFetcher = new PageFetcher();
-		
+
 		// 初始化开球网数据分析器
 		happyppDataParser = new HappyppDataParser();
 	}
@@ -37,7 +37,7 @@ public class HappyppCrawler implements Runnable {
 		while (!WaitingUrlQueues.isEmpty()) {
 			// 从等待队列中提取一个Url
 			String urlCurrent = WaitingUrlQueues.poll();
-			System.out.println("抓取比赛内容-->"+urlCurrent);
+			System.out.println("抓取比赛内容-->" + urlCurrent);
 			// 页面内容
 			pageFetchResult = pageFetcher.fetchPage(urlCurrent);
 			String contentCurrent = pageFetchResult.getContent();
@@ -47,7 +47,7 @@ public class HappyppCrawler implements Runnable {
 			// downloadFile(matchData);
 			saveMatches(matchData);
 		}
-		//关闭数据库
+		// 关闭数据库
 		matches.close();
 		JOptionPane.showMessageDialog(null, "HappyPingPang网抓取完成", "提示", 2);
 	}
@@ -72,7 +72,6 @@ public class HappyppCrawler implements Runnable {
 		matches.set(url + ":deadline", matchData.getMatchDeadline());
 
 		matches.set(url + ":introduction", matchData.getMatchIntroduction());
-
 	}
 
 	/*

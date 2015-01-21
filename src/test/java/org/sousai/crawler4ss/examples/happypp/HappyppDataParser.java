@@ -1,5 +1,10 @@
 package org.sousai.crawler4ss.examples.happypp;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,9 +32,12 @@ public class HappyppDataParser implements DataParser{
 		String matchType = matchContent.getElementsByClass("f-left").text();
 
 		// 比赛地点
-		String matchAddress = matchContent.getElementsByClass("left")
-				.select("li").get(3).text().replace("所在城市：", "");
+		/*String matchAddress = matchContent.getElementsByClass("left")
+				.select("li").get(3).text().replace("所在城市：", "");*/
 
+		String matchAddress = matchContent.getElementsByClass("detail").get(0)
+				.select("li").get(5).text().replace("比赛场地：", "");
+		
 		// 比赛开始时间
 		String time[] = matchContent.getElementsByClass("left")
 				.select("span.date").get(0).text().split(" 到 ");
@@ -37,12 +45,32 @@ public class HappyppDataParser implements DataParser{
 
 		// 截止时间
 		String matchDeadline = time[1];
+		
+		//中文格式的日期转为英文格式
+		DateFormat f1 = new SimpleDateFormat("yyyy年MM月dd日") ;
+		DateFormat f2 = new SimpleDateFormat("yyyy-MM-dd") ;
+		Date date = null ;
+		try {
+			date = f1.parse(matchStartTime);
+			matchStartTime = f2.format(date) ;
+			date = f1.parse(matchDeadline) ;
+			matchDeadline = f2.format(date) ;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 		// 比赛简介
 		String matchIntroduction = matchContent.getElementsByClass("left")
 				.select("dd").get(0).select("li").last().text()
 				.replace("比赛简介：", "");
 
+		matchIntroduction = matchStartTime+" 到 " + matchDeadline +"\n"
+				+"比赛场地: "+matchAddress +"\n"
+				+"比赛类型: "+matchType+"\n"
+				+"比赛简介: "+ matchIntroduction ;
+		
+		System.out.println(matchIntroduction);
+		
 		happyppData = new MatchData.Builder(url, name).matchType(matchType)
 				.matchAddress(matchAddress).matchStartTime(matchStartTime)
 				.matchDeadline(matchDeadline)

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class ChatRecords {
 	public static void main(String[] args) {
-		File file = new File("/home/lei/Desktop/data/1.txt");
+		File file = new File("/home/lei/1.txt");
         BufferedReader reader = null;
         ArrayList<StringBuffer> lists = new ArrayList<StringBuffer>() ;
         StringBuffer stringBuffer = new StringBuffer() ;
