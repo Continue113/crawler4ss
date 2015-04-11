@@ -22,7 +22,7 @@ public class Jdbc {
 	}
 	//1.增加信息
 	public void add(MatchData matchData) {
-		String sql = "insert into matches(url,name,matchType,matchAddress,matchStartTime,matchDeadline,matchIntroduction) values(?,?,?,?,?,?,?)";
+		String sql = "insert into DATA_COLLECTION(url,name,matchType,matchAddress,matchStartTime,matchDeadline,matchIntroduction) values(?,?,?,?,?,?,?)";
 		try {
 			
 			pstmt = conn.prepareStatement(sql);
@@ -93,7 +93,7 @@ public class Jdbc {
 		public String select() {
 			StringBuilder jsonMatch = new StringBuilder();
 			try {
-				String sql = "select * from matches";
+				String sql = "select * from DATA_COLLECTION";
 				pstmt = conn.prepareStatement(sql);
 				result = pstmt.executeQuery();
 
