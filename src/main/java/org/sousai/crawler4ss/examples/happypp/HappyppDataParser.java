@@ -24,27 +24,32 @@ public class HappyppDataParser implements DataParser{
 		Element matchContent = doc.getElementById("main");
 
 		// 比赛名称
-		String name = doc.getElementsByClass("title_top").get(0)
-				.getElementsByClass("bold").text();
+		/*String name = doc.getElementsByClass("title_top").get(0)
+				.getElementsByClass("bold").text();*/
+		String name = doc.getElementsByClass("name-a").text();
 
 		System.out.println(name);
 		// 比赛类型
-		String matchType = matchContent.getElementsByClass("f-left").text();
+		String matchType = doc.getElementsByClass("e-left").get(0).select("em").get(0).text();
 
+		System.out.println(matchType);
 		// 比赛地点
 		/*String matchAddress = matchContent.getElementsByClass("left")
 				.select("li").get(3).text().replace("所在城市：", "");*/
 
-		String matchAddress = matchContent.getElementsByClass("detail").get(0)
-				.select("li").get(5).text().replace("比赛场地：", "");
+		String matchAddress = doc.getElementsByClass("about").get(0)
+				.select("dd").get(3).text().replace("比赛场地：", "");
+		System.out.println(matchAddress);
 		
 		// 比赛开始时间
-		String time[] = matchContent.getElementsByClass("left")
-				.select("span.date").get(0).text().split(" 到 ");
-		String matchStartTime = time[0];
+		String time[] = doc.getElementsByClass("dl-01")
+				.select("dd").get(0).text().split("到");
+		System.out.println(time[0]);
+		String matchStartTime = time[0].trim();
 
 		// 截止时间
-		String matchDeadline = time[1];
+		int length = time[1].length();
+		String matchDeadline = time[1].substring(length-11,length);
 		
 		//中文格式的日期转为英文格式
 		DateFormat f1 = new SimpleDateFormat("yyyy年MM月dd日") ;
@@ -60,8 +65,7 @@ public class HappyppDataParser implements DataParser{
 		}
 
 		// 比赛简介
-		String matchIntroduction = matchContent.getElementsByClass("left")
-				.select("dd").get(0).select("li").last().text()
+		String matchIntroduction = doc.getElementsByClass("about").text()
 				.replace("比赛简介：", "");
 
 		matchIntroduction = matchStartTime+" 到 " + matchDeadline +"\n"
