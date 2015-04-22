@@ -24,7 +24,7 @@ public class HappyppMatchesUrl {
 		Document doc = null;
 		PageFetcher pageFetcher = new PageFetcher();
 		String content = null;
-		for (int i = 1; i < 67; ++i) {
+		for (int i = 1; i < 77; ++i) {
 			pageUrl = baseUrl + "/games/all/page:" + i + "?url=%2Fgames%2Fall";
 			content = pageFetcher.fetchPage(pageUrl).getContent();
 			doc = Jsoup.parse(content);
