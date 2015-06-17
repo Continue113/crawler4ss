@@ -188,7 +188,7 @@ public class MainCrawler implements ActionListener {
 							.matchDeadline(matches.selectByKey(url + ":deadline"))
 							.matchIntroduction(matches.selectByKey(url + ":introduction")).build());
 				}
-				
+				JOptionPane.showMessageDialog(null, "导入数据库完成", "提示", 2);
 				db.close();
 				matches.close();
 			}
